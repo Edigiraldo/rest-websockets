@@ -3,9 +3,11 @@ package main
 import (
 	"context"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/Edigiraldo/RestWebSockets/handlers"
+	"github.com/Edigiraldo/RestWebSockets/middleware"
 	"github.com/Edigiraldo/RestWebSockets/server"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
@@ -45,5 +47,10 @@ func main() {
 }
 
 func BindRoutes(s server.Server, r *mux.Router) {
-	r.HandleFunc("/", handlers.HomeHandler(s))
+	r.Use(middleware.CheckAuthMiddleware(s))
+
+	r.HandleFunc("/", handlers.HomeHandler(s)).Methods(http.MethodGet)
+	r.HandleFunc("/signup", handlers.SingUpHandler(s)).Methods(http.MethodPost)
+	r.HandleFunc("/login", handlers.LoginHandler(s)).Methods(http.MethodPost)
+	r.HandleFunc("/me", handlers.MeHandler(s)).Methods(http.MethodGet)
 }
