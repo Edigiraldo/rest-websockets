@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/Edigiraldo/RestWebSockets/database"
+	"github.com/Edigiraldo/RestWebSockets/repository"
 	"github.com/gorilla/mux"
 )
 
@@ -45,9 +47,17 @@ func NewServer(ctx context.Context, config Config) (*Broker, error) {
 	}, nil
 }
 
-func (b *Broker) Start(binder func(s Server, r *mux.Router)) {
+func (b *Broker) Start(binder func(server Server, r *mux.Router)) {
 	b.router = mux.NewRouter()
 	binder(b, b.router)
+
+	postgresRepo, err := database.NewPostgresRepository(b.config.DatabaseURL)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	repository.SetRepository(postgresRepo)
+
 	log.Printf("Starting server on port %s\n", b.Config().Port)
 	if err := http.ListenAndServe(b.Config().Port, b.router); err != nil {
 		log.Fatal("Error while starting server: ", err)
