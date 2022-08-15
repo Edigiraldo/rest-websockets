@@ -28,3 +28,16 @@ locally:
 	URL: localhost:1234/posts\
 	Header: { "Authorization": "the.received.token"}\
 	Body: { "content": "The post content"}
+- To get a post:\
+	Method: GET\
+	URL: localhost:1234/posts/{id}\
+	Header: { "Authorization": "the.received.token"}\
+- To update a the post content:\
+	Method: PATCH\
+	URL: localhost:1234/posts/{id}\
+	Header: { "Authorization": "the.received.token"}\
+	Body: { "content": "The new post content"}
+- To delete a post:\
+	Method: DELETE\
+	URL: localhost:1234/posts/{id}\
+	Header: { "Authorization": "the.received.token"}
