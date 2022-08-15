@@ -27,6 +27,21 @@ func (repo *PostDatabase) InsertPost(ctx context.Context, post *models.Post) (er
 	return err
 }
 
+func (repo *PostDatabase) GetPostById(ctx context.Context, id, userId string) (post *models.Post, err error) {
+	post = &models.Post{}
+	db, err := repo.implementation.GetConnection()
+	if err != nil {
+		return nil, err
+	}
+	row := db.QueryRowContext(ctx, "SELECT id, content FROM posts WHERE id = $1 AND user_id = $2", id, userId)
+
+	if err = row.Scan(&post.Id, &post.Content); err != nil {
+		return nil, err
+	}
+
+	return post, nil
+}
+
 func (repo *PostDatabase) Close() error {
 	db, err := repo.implementation.GetConnection()
 	if err != nil {

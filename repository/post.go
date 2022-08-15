@@ -8,6 +8,7 @@ import (
 
 type PostRepository interface {
 	InsertPost(ctx context.Context, post *models.Post) (err error)
+	GetPostById(ctx context.Context, id, userId string) (post *models.Post, err error)
 	Close() error
 }
 
@@ -19,6 +20,10 @@ func SetPostRepository(repository PostRepository) {
 
 func InsertPost(ctx context.Context, post *models.Post) (err error) {
 	return postRepoImplementation.InsertPost(ctx, post)
+}
+
+func GetPostById(ctx context.Context, id, userId string) (post *models.Post, err error) {
+	return postRepoImplementation.GetPostById(ctx, id, userId)
 }
 
 func ClosePostRepo() error {

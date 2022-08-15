@@ -2,7 +2,11 @@ package handlers
 
 import (
 	"encoding/json"
+	"errors"
+	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 
 	"github.com/Edigiraldo/RestWebSockets/models"
 	"github.com/Edigiraldo/RestWebSockets/repository"
@@ -10,12 +14,16 @@ import (
 	"github.com/segmentio/ksuid"
 )
 
+var (
+	ErrInvalidId = errors.New("invalid id")
+)
+
 type PostRequest struct {
 	Content string `json:"content"`
 }
 
 type PostResponse struct {
-	ID      string `json:"id"`
+	Id      string `json:"id"`
 	Content string `json:"content"`
 }
 
@@ -53,6 +61,40 @@ func CreatePost(s server.Server) http.HandlerFunc {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusCreated)
 		json.NewEncoder(w).Encode(post)
+
+	})
+}
+
+func GetPostById(s server.Server) http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		claims, err := CheckAuthentication(r.Header.Get("Authorization"), s.Config().JWTSecret)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusUnauthorized)
+			return
+		}
+
+		params := mux.Vars(r)
+		id, ok := params["id"]
+		if !ok {
+			http.Error(w, ErrInvalidId.Error(), http.StatusBadRequest)
+		}
+
+		post, err := repository.GetPostById(r.Context(), id, claims.UserId)
+		if err != nil {
+			log.Println(id, claims.UserId)
+			log.Println(err)
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+
+		response := PostResponse{
+			Id:      post.Id,
+			Content: post.Content,
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(response)
 
 	})
 }
