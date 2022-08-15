@@ -28,7 +28,7 @@ type LoginResponse struct {
 	Token string `json:"token"`
 }
 
-func SingUpHandler(s server.Server) http.HandlerFunc {
+func SingUp(s server.Server) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		request := SingUpLoginRequest{}
 		err := json.NewDecoder(r.Body).Decode(&request)
@@ -73,7 +73,7 @@ func SingUpHandler(s server.Server) http.HandlerFunc {
 	}
 }
 
-func LoginHandler(s server.Server) http.HandlerFunc {
+func Login(s server.Server) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		request := SingUpLoginRequest{}
 		err := json.NewDecoder(r.Body).Decode(&request)

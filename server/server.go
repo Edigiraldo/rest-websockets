@@ -51,12 +51,16 @@ func (b *Broker) Start(binder func(server Server, r *mux.Router)) {
 	b.router = mux.NewRouter()
 	binder(b, b.router)
 
-	postgresRepo, err := database.NewPostgresRepository(b.config.DatabaseURL)
+	postgresDatabase, err := database.NewDatabase(b.config.DatabaseURL)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	repository.SetRepository(postgresRepo)
+	postDB := database.NewPostDatabase(postgresDatabase)
+	userDB := database.NewUserDatabase(postgresDatabase)
+
+	repository.SetPostRepository(postDB)
+	repository.SetUserRepository(userDB)
 
 	log.Printf("Starting server on port %s\n", b.Config().Port)
 	if err := http.ListenAndServe(b.Config().Port, b.router); err != nil {

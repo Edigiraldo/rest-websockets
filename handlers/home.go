@@ -16,7 +16,7 @@ type HomeResponse struct {
 	Status  int    `json:"status"`
 }
 
-func HomeHandler(s server.Server) http.HandlerFunc {
+func Home(s server.Server) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
@@ -30,7 +30,7 @@ func HomeHandler(s server.Server) http.HandlerFunc {
 	}
 }
 
-func MeHandler(s server.Server) http.HandlerFunc {
+func Me(s server.Server) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		tokenString := strings.TrimSpace(r.Header.Get("Authorization"))
 		token, err := jwt.ParseWithClaims(tokenString, &models.AppClaims{},
