@@ -7,6 +7,7 @@ import (
 )
 
 type PostRepository interface {
+	ListPosts(ctx context.Context, userId string, page uint64) ([]*models.Post, error)
 	InsertPost(ctx context.Context, post *models.Post) (err error)
 	GetPostById(ctx context.Context, id, userId string) (post *models.Post, err error)
 	UpdatePostById(ctx context.Context, content, id, userId string) (post *models.Post, err error)
@@ -18,6 +19,10 @@ var postRepoImplementation PostRepository
 
 func SetPostRepository(repository PostRepository) {
 	postRepoImplementation = repository
+}
+
+func ListPosts(ctx context.Context, userId string, page uint64) ([]*models.Post, error) {
+	return postRepoImplementation.ListPosts(ctx, userId, page)
 }
 
 func InsertPost(ctx context.Context, post *models.Post) (err error) {

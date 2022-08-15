@@ -49,12 +49,13 @@ func main() {
 func BindRoutes(s server.Server, r *mux.Router) {
 	r.Use(middleware.CheckAuthMiddleware(s))
 
-	r.HandleFunc("/", handlers.Home(s)).Methods(http.MethodGet)
-	r.HandleFunc("/signup", handlers.SingUp(s)).Methods(http.MethodPost)
-	r.HandleFunc("/login", handlers.Login(s)).Methods(http.MethodPost)
-	r.HandleFunc("/me", handlers.Me(s)).Methods(http.MethodGet)
-	r.HandleFunc("/posts", handlers.CreatePost(s)).Methods(http.MethodPost)
-	r.HandleFunc("/posts/{id}", handlers.GetPostById(s)).Methods(http.MethodGet)
-	r.HandleFunc("/posts/{id}", handlers.UpdatePostById(s)).Methods(http.MethodPatch)
-	r.HandleFunc("/posts/{id}", handlers.DeletePostById(s)).Methods(http.MethodDelete)
+	r.HandleFunc("/api/v1/", handlers.Home(s)).Methods(http.MethodGet)
+	r.HandleFunc("/api/v1/signup", handlers.SingUp(s)).Methods(http.MethodPost)
+	r.HandleFunc("/api/v1/login", handlers.Login(s)).Methods(http.MethodPost)
+	r.HandleFunc("/api/v1/me", handlers.Me(s)).Methods(http.MethodGet)
+	r.HandleFunc("/api/v1/posts", handlers.ListPostHandler(s)).Methods(http.MethodGet)
+	r.HandleFunc("/api/v1/posts", handlers.CreatePost(s)).Methods(http.MethodPost)
+	r.HandleFunc("/api/v1/posts/{id}", handlers.GetPostById(s)).Methods(http.MethodGet)
+	r.HandleFunc("/api/v1/posts/{id}", handlers.UpdatePostById(s)).Methods(http.MethodPatch)
+	r.HandleFunc("/api/v1/posts/{id}", handlers.DeletePostById(s)).Methods(http.MethodDelete)
 }

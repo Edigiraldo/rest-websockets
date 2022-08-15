@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 
@@ -25,6 +26,33 @@ type PostRequest struct {
 type PostResponse struct {
 	Id      string `json:"id"`
 	Content string `json:"content"`
+}
+
+func ListPostHandler(s server.Server) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		claims, err := CheckAuthentication(r.Header.Get("Authorization"), s.Config().JWTSecret)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusUnauthorized)
+			return
+		}
+
+		pageStr := r.URL.Query().Get("page")
+		var page = uint64(0)
+		if pageStr != "" {
+			page, err = strconv.ParseUint(pageStr, 10, 64)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+			}
+		}
+		posts, err := repository.ListPosts(r.Context(), claims.UserId, page)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(posts)
+	}
 }
 
 func CreatePost(s server.Server) http.HandlerFunc {

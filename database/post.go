@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"log"
 
 	"github.com/Edigiraldo/RestWebSockets/models"
 )
@@ -14,6 +15,35 @@ func NewPostDatabase(databaseImplementation AbstractDatabase) *PostDatabase {
 	return &PostDatabase{
 		implementation: databaseImplementation,
 	}
+}
+
+func (repo *PostDatabase) ListPosts(ctx context.Context, userId string, page uint64) ([]*models.Post, error) {
+	db, err := repo.implementation.GetConnection()
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := db.QueryContext(ctx, "SELECT id, content, user_id, created_at FROM posts WHERE user_id = $1 LIMIT $2 OFFSET $3", userId, 5, page*5)
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		err = rows.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
+	var posts []*models.Post
+	for rows.Next() {
+		var post = models.Post{}
+		if err = rows.Scan(&post.Id, &post.Content, &post.UserId, &post.CreatedAt); err == nil {
+			posts = append(posts, &post)
+		}
+	}
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+	return posts, nil
 }
 
 func (repo *PostDatabase) InsertPost(ctx context.Context, post *models.Post) (err error) {
