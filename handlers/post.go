@@ -122,7 +122,6 @@ func UpdatePostById(s server.Server) http.HandlerFunc {
 		post, err := repository.UpdatePostById(r.Context(), newPost.Content, id, claims.UserId)
 		if err != nil {
 			log.Println(err)
-			log.Println(newPost.Content, id, claims.UserId)
 			w.WriteHeader(http.StatusNotFound)
 			return
 		}
@@ -135,5 +134,30 @@ func UpdatePostById(s server.Server) http.HandlerFunc {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(response)
+	})
+}
+
+func DeletePostById(s server.Server) http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		claims, err := CheckAuthentication(r.Header.Get("Authorization"), s.Config().JWTSecret)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusUnauthorized)
+			return
+		}
+
+		params := mux.Vars(r)
+		id, ok := params["id"]
+		if !ok {
+			http.Error(w, ErrInvalidId.Error(), http.StatusBadRequest)
+		}
+
+		err = repository.DeletePostById(r.Context(), id, claims.UserId)
+		if err != nil {
+			log.Println(err)
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+
+		w.WriteHeader(http.StatusNoContent)
 	})
 }

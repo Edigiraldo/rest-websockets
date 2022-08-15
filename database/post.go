@@ -57,6 +57,18 @@ func (repo *PostDatabase) UpdatePostById(ctx context.Context, content, id, userI
 	return post, nil
 }
 
+func (repo *PostDatabase) DeletePostById(ctx context.Context, id, userId string) (err error) {
+	db, err := repo.implementation.GetConnection()
+	if err != nil {
+		return err
+	}
+
+	deleteStatement := `DELETE FROM posts WHERE id = $1 AND user_id = $2;`
+	_, err = db.Exec(deleteStatement, id, userId)
+
+	return err
+}
+
 func (repo *PostDatabase) Close() error {
 	db, err := repo.implementation.GetConnection()
 	if err != nil {
