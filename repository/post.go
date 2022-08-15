@@ -9,6 +9,7 @@ import (
 type PostRepository interface {
 	InsertPost(ctx context.Context, post *models.Post) (err error)
 	GetPostById(ctx context.Context, id, userId string) (post *models.Post, err error)
+	UpdatePostById(ctx context.Context, content, id, userId string) (post *models.Post, err error)
 	Close() error
 }
 
@@ -24,6 +25,10 @@ func InsertPost(ctx context.Context, post *models.Post) (err error) {
 
 func GetPostById(ctx context.Context, id, userId string) (post *models.Post, err error) {
 	return postRepoImplementation.GetPostById(ctx, id, userId)
+}
+
+func UpdatePostById(ctx context.Context, content, id, userId string) (post *models.Post, err error) {
+	return postRepoImplementation.UpdatePostById(ctx, content, id, userId)
 }
 
 func ClosePostRepo() error {

@@ -98,3 +98,42 @@ func GetPostById(s server.Server) http.HandlerFunc {
 
 	})
 }
+
+func UpdatePostById(s server.Server) http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		claims, err := CheckAuthentication(r.Header.Get("Authorization"), s.Config().JWTSecret)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusUnauthorized)
+			return
+		}
+
+		params := mux.Vars(r)
+		id, ok := params["id"]
+		if !ok {
+			http.Error(w, ErrInvalidId.Error(), http.StatusBadRequest)
+		}
+
+		newPost := PostRequest{}
+		err = json.NewDecoder(r.Body).Decode(&newPost)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+		}
+
+		post, err := repository.UpdatePostById(r.Context(), newPost.Content, id, claims.UserId)
+		if err != nil {
+			log.Println(err)
+			log.Println(newPost.Content, id, claims.UserId)
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+
+		response := PostResponse{
+			Id:      post.Id,
+			Content: post.Content,
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(response)
+	})
+}

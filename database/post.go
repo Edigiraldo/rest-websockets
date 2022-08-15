@@ -42,6 +42,21 @@ func (repo *PostDatabase) GetPostById(ctx context.Context, id, userId string) (p
 	return post, nil
 }
 
+func (repo *PostDatabase) UpdatePostById(ctx context.Context, content, id, userId string) (post *models.Post, err error) {
+	post = &models.Post{}
+	db, err := repo.implementation.GetConnection()
+	if err != nil {
+		return nil, err
+	}
+	row := db.QueryRowContext(ctx, "UPDATE posts SET content = $1 WHERE id = $2 AND user_id = $3", content, id, userId)
+
+	if err = row.Scan(&post.Id, &post.Content); err != nil {
+		return nil, err
+	}
+
+	return post, nil
+}
+
 func (repo *PostDatabase) Close() error {
 	db, err := repo.implementation.GetConnection()
 	if err != nil {
