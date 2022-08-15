@@ -3,12 +3,10 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
-	"strings"
 
 	"github.com/Edigiraldo/RestWebSockets/models"
 	"github.com/Edigiraldo/RestWebSockets/repository"
 	"github.com/Edigiraldo/RestWebSockets/server"
-	"github.com/golang-jwt/jwt"
 	"github.com/segmentio/ksuid"
 )
 
@@ -23,21 +21,10 @@ type PostResponse struct {
 
 func CreatePost(s server.Server) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		var claims *models.AppClaims
-		var ok bool
-
-		tokenString := strings.TrimSpace(r.Header.Get("Authorization"))
-		token, err := jwt.ParseWithClaims(tokenString, &models.AppClaims{},
-			func(token *jwt.Token) (interface{}, error) {
-				return []byte(s.Config().JWTSecret), nil
-			})
-
+		claims, err := CheckAuthentication(r.Header.Get("Authorization"), s.Config().JWTSecret)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusUnauthorized)
-		}
-
-		if claims, ok = token.Claims.(*models.AppClaims); !ok || !token.Valid {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 		}
 
 		id, err := ksuid.NewRandom()
