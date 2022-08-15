@@ -23,3 +23,8 @@ locally:
 	Method: GET\
 	URL: localhost:1234/me\
 	Header: { "Authorization": "the.received.token"}
+- To create a new post:\
+	Method: POST\
+	URL: localhost:1234/posts\
+	Header: { "Authorization": "the.received.token"}\
+	Body: { "content": "The post content"}
