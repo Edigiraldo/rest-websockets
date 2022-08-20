@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+
+    ports:
+      - "5050:5050"
+
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@db:5432/postgres?sslmode=disable
+
+    depends_on:
+      - db
+
+  db:
+    build: ./database
