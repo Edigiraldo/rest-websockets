@@ -1,10 +1,8 @@
 To run this proyect in your local environment:  
 - Go to the root of the proyect and then\
 `cd database`
-- Build the docker image for postgress db\
-`docker build . -t rest-web-sockets-postgress-db`
-- Run your docker container\
-`docker run -p 4321:5432 rest-web-sockets-postgress-db`
+- Run\
+`docker compose up`
 - Go to root file and run\
 `go mod tidy`
 - Finally, run the server with\
@@ -40,4 +38,7 @@ locally:
 - To delete a post:\
 	Method: DELETE\
 	URL: localhost:1234/posts/{id}\
+	Header: { "Authorization": "the.received.token"}
+- To create a websocket connection:\
+	URL: localhost:1234/ws\
 	Header: { "Authorization": "the.received.token"}
