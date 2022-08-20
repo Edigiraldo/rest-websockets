@@ -8,6 +8,7 @@ import (
 
 	"github.com/Edigiraldo/RestWebSockets/database"
 	"github.com/Edigiraldo/RestWebSockets/repository"
+	"github.com/Edigiraldo/RestWebSockets/websocket"
 	"github.com/gorilla/mux"
 )
 
@@ -19,15 +20,21 @@ type Config struct {
 
 type Server interface {
 	Config() *Config
+	Hub() *websocket.Hub
 }
 
 type Broker struct {
 	config *Config
 	router *mux.Router
+	hub    *websocket.Hub
 }
 
 func (b *Broker) Config() *Config {
 	return b.config
+}
+
+func (b *Broker) Hub() *websocket.Hub {
+	return b.hub
 }
 
 func NewServer(ctx context.Context, config Config) (*Broker, error) {
@@ -44,6 +51,7 @@ func NewServer(ctx context.Context, config Config) (*Broker, error) {
 	return &Broker{
 		config: &config,
 		router: mux.NewRouter(),
+		hub:    websocket.NewHub(),
 	}, nil
 }
 
@@ -61,6 +69,8 @@ func (b *Broker) Start(binder func(server Server, r *mux.Router)) {
 
 	repository.SetPostRepository(postDB)
 	repository.SetUserRepository(userDB)
+
+	go b.hub.Run()
 
 	log.Printf("Starting server on port %s\n", b.Config().Port)
 	if err := http.ListenAndServe(b.Config().Port, b.router); err != nil {

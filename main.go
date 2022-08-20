@@ -49,6 +49,8 @@ func main() {
 func BindRoutes(s server.Server, r *mux.Router) {
 	r.Use(middleware.CheckAuthMiddleware(s))
 
+	r.HandleFunc("/api/v1/ws", s.Hub().HandleWebSocket)
+
 	r.HandleFunc("/api/v1/", handlers.Home(s)).Methods(http.MethodGet)
 	r.HandleFunc("/api/v1/signup", handlers.SingUp(s)).Methods(http.MethodPost)
 	r.HandleFunc("/api/v1/login", handlers.Login(s)).Methods(http.MethodPost)

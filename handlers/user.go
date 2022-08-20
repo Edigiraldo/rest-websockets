@@ -82,8 +82,6 @@ func Login(s server.Server) http.HandlerFunc {
 			return
 		}
 
-		log.Println(request)
-
 		user, err := repository.GetUserByEmail(r.Context(), request.Email)
 		if err != nil {
 			http.Error(w, "there was an error while logging user", http.StatusInternalServerError)
