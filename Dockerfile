@@ -15,14 +15,14 @@ COPY ./ ./
 
 RUN CGO_ENABLED=0 go build \
     -installsuffix 'static' \
-    -o /platzi-rest-ws .
+    -o /rest-websockets .
 
 FROM scratch AS runner
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /ect/ssl/certs/
 
 COPY .env ./
-COPY --from=builder /platzi-rest-ws /platzi-rest-ws
+COPY --from=builder /rest-websockets /rest-websockets
 
 EXPOSE 5050
 
