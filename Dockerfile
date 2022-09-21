@@ -26,4 +26,4 @@ COPY --from=builder /rest-websockets /rest-websockets
 
 EXPOSE 5050
 
-ENTRYPOINT ["/platzi-rest-ws"]
+ENTRYPOINT ["/rest-websockets"]
