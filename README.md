@@ -36,8 +36,9 @@ Locally:
 
   - [GET] localhost:5050/api/v1/me
 
+  Header
+
   ```json
-  # Header
   {
     "Authorization": "the.received.token"
   }
@@ -47,12 +48,17 @@ Locally:
 
   - [POST] localhost:5050/api/v1/posts
 
+  Header
+
   ```json
-  # Header
   {
     "Authorization": "the.received.token"
   }
-  #Body
+  ```
+
+  Body
+
+  ```json
   {
     "content": "The post content"
   }
@@ -62,8 +68,9 @@ Locally:
 
   - [GET] localhost:5050/api/v1/posts/{id}
 
+  Header
+
   ```json
-  # Header
   {
     "Authorization": "the.received.token"
   }
@@ -73,12 +80,17 @@ Locally:
 
   - [PATCH] localhost:5050/api/v1/posts/{id}
 
+  Header
+
   ```json
-  # Header
   {
     "Authorization": "the.received.token"
   }
-  #Body
+  ```
+
+  Body
+
+  ```json
   {
     "content": "The new post content"
   }
@@ -88,8 +100,9 @@ Locally:
 
   - [DELETE] localhost:5050/api/v1/posts/{id}
 
+  Header
+
   ```json
-  # Header
   {
     "Authorization": "the.received.token"
   }
@@ -99,8 +112,9 @@ Locally:
 
   - localhost:5050/api/v1/ws
 
+  Header
+
   ```json
-  # Header
   {
     "Authorization": "the.received.token"
   }
