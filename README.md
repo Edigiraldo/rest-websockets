@@ -110,7 +110,7 @@ Locally:
 
 - To create a websocket connection:\
 
-  - localhost:5050/api/v1/ws
+  localhost:5050/api/v1/ws
 
   Header
 
