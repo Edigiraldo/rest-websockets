@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -73,7 +74,9 @@ func (b *Broker) Start(binder func(server Server, r *mux.Router)) {
 	go b.hub.Run()
 
 	log.Printf("Starting server on port %s\n", b.Config().Port)
-	if err := http.ListenAndServe(b.Config().Port, b.router); err != nil {
+
+	port := fmt.Sprintf(":%s", b.Config().Port)
+	if err := http.ListenAndServe(port, b.router); err != nil {
 		log.Fatal("Error while starting server: ", err)
 	}
 }

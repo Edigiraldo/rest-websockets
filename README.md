@@ -1,44 +1,107 @@
-To run this proyect in your local environment:  
-- Go to the root of the proyect and then\
-`cd database`
-- Run\
-`docker compose up`
-- Go to root file and run\
-`go mod tidy`
-- Finally, run the server with\
-`go run main.go`
+# Web forum with REST and WebSockets
 
-locally:
-- To sing up:\
-	Method: POST\
-	URL: localhost:1234/signup\
-	Body: { "email": "your@email.com", "password": "yourpassword"}
-- To login:\
-	Method: POST\
-	URL: localhost:1234/login\
-	Body: { "email": "your@email.com", "password": "yourpassword"}
-- To Get user info:\
-	Method: GET\
-	URL: localhost:1234/me\
-	Header: { "Authorization": "the.received.token"}
-- To create a new post:\
-	Method: POST\
-	URL: localhost:1234/posts\
-	Header: { "Authorization": "the.received.token"}\
-	Body: { "content": "The post content"}
+To run this proyect in your local environment:
+
+- Go to the root of the proyect and then
+
+```console
+    docker compose up
+```
+
+Locally:
+
+- To sing up:
+
+  - [POST] localhost:5050/api/v1/signup
+
+  ```json
+  {
+    "email": "your@email.com",
+    "password": "yourpassword"
+  }
+  ```
+
+- To login:
+
+  - [POST] localhost:5050/api/v1/login
+
+  ```json
+  {
+    "email": "your@email.com",
+    "password": "yourpassword"
+  }
+  ```
+
+- To Get user info:
+
+  - [GET] localhost:5050/api/v1/me
+
+  ```json
+  # Header
+  {
+    "Authorization": "the.received.token"
+  }
+  ```
+
+- To create a new post:
+
+  - [POST] localhost:5050/api/v1/posts
+
+  ```json
+  # Header
+  {
+    "Authorization": "the.received.token"
+  }
+  #Body
+  {
+    "content": "The post content"
+  }
+  ```
+
 - To get a post:\
-	Method: GET\
-	URL: localhost:1234/posts/{id}\
-	Header: { "Authorization": "the.received.token"}\
+
+  - [GET] localhost:5050/api/v1/posts/{id}
+
+  ```json
+  # Header
+  {
+    "Authorization": "the.received.token"
+  }
+  ```
+
 - To update a the post content:\
-	Method: PATCH\
-	URL: localhost:1234/posts/{id}\
-	Header: { "Authorization": "the.received.token"}\
-	Body: { "content": "The new post content"}
+
+  - [PATCH] localhost:5050/api/v1/posts/{id}
+
+  ```json
+  # Header
+  {
+    "Authorization": "the.received.token"
+  }
+  #Body
+  {
+    "content": "The new post content"
+  }
+  ```
+
 - To delete a post:\
-	Method: DELETE\
-	URL: localhost:1234/posts/{id}\
-	Header: { "Authorization": "the.received.token"}
+
+  - [DELETE] localhost:5050/api/v1/posts/{id}
+
+  ```json
+  # Header
+  {
+    "Authorization": "the.received.token"
+  }
+  ```
+
 - To create a websocket connection:\
-	URL: localhost:1234/ws\
-	Header: { "Authorization": "the.received.token"}
+
+  - localhost:5050/api/v1/ws
+
+  ```json
+  # Header
+  {
+    "Authorization": "the.received.token"
+  }
+  ```
