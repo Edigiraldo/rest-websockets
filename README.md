@@ -12,7 +12,7 @@ Locally:
 
 - To sing up:
 
-  - [POST] localhost:5050/api/v1/signup
+  [POST] localhost:5050/api/v1/signup
 
   ```json
   {
@@ -23,7 +23,7 @@ Locally:
 
 - To login:
 
-  - [POST] localhost:5050/api/v1/login
+  [POST] localhost:5050/api/v1/login
 
   ```json
   {
@@ -34,7 +34,7 @@ Locally:
 
 - To Get user info:
 
-  - [GET] localhost:5050/api/v1/me
+  [GET] localhost:5050/api/v1/me
 
   Header
 
@@ -46,7 +46,7 @@ Locally:
 
 - To create a new post:
 
-  - [POST] localhost:5050/api/v1/posts
+  [POST] localhost:5050/api/v1/posts
 
   Header
 
@@ -66,7 +66,7 @@ Locally:
 
 - To get a post:\
 
-  - [GET] localhost:5050/api/v1/posts/{id}
+  [GET] localhost:5050/api/v1/posts/{id}
 
   Header
 
@@ -78,7 +78,7 @@ Locally:
 
 - To update a the post content:\
 
-  - [PATCH] localhost:5050/api/v1/posts/{id}
+  [PATCH] localhost:5050/api/v1/posts/{id}
 
   Header
 
@@ -98,7 +98,7 @@ Locally:
 
 - To delete a post:\
 
-  - [DELETE] localhost:5050/api/v1/posts/{id}
+  [DELETE] localhost:5050/api/v1/posts/{id}
 
   Header
 
