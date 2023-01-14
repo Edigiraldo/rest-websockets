@@ -6,7 +6,7 @@ login within the site. In addition, they can open a websocket connection to
 get notified of any new posts. Finally, users can see their own information.
 
 The project consists on a service that is facing user's request. The data is backed
-up in a Postgres DB, the authentication system uses JSON web tokens and HTTP and websocket protocols are used.
+up in a Postgres DB, the authentication system uses JSON web tokens, and HTTP and websocket protocols are used.
 
 ## Instructions
 
@@ -42,7 +42,7 @@ Locally:
   }
   ```
 
-- To open a websocket connection:\
+- To open a websocket connection:
 
   ![WS](./imgs/websockets.png "websocket connection")
 
@@ -92,11 +92,11 @@ Locally:
   }
   ```
 
-- To get a post:\
+- To get a post:
 
   ![Get post](./imgs/get-post.png "get post")
 
-  [GET] localhost:5050/api/v1/posts/{id}
+  [GET] localhost:5050/api/v1/posts/{post_id}
 
   Header
 
@@ -106,11 +106,11 @@ Locally:
   }
   ```
 
-- To update a the post content:\
+- To update the content of a post:
 
   ![Update post](./imgs/update-post.png "update post")
 
-  [PATCH] localhost:5050/api/v1/posts/{id}
+  [PATCH] localhost:5050/api/v1/posts/{post_id}
 
   Header
 
@@ -128,11 +128,11 @@ Locally:
   }
   ```
 
-- To delete a post:\
+- To delete a post:
 
   ![Delete post](./imgs/delete-post.png "delete post")
 
-  [DELETE] localhost:5050/api/v1/posts/{id}
+  [DELETE] localhost:5050/api/v1/posts/{post_id}
 
   Header
 
